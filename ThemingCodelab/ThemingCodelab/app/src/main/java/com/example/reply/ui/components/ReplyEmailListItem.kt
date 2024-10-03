@@ -51,6 +51,7 @@ fun ReplyEmailListItem(
     navigateToDetail: (Long) -> Unit
 ) {
     Card(
+        shape = MaterialTheme.shapes.medium,
         modifier = modifier
             .padding(horizontal = 16.dp, vertical = 4.dp)
             .semantics { selected = isSelected }
@@ -79,9 +80,12 @@ fun ReplyEmailListItem(
                 ) {
                     Text(
                         text = email.sender.firstName,
+                        style = MaterialTheme.typography.labelMedium
                     )
                     Text(
                         text = email.createdAt,
+                        style = MaterialTheme.typography.labelMedium
+
                     )
                 }
                 IconButton(
@@ -99,11 +103,14 @@ fun ReplyEmailListItem(
 
             Text(
                 text = email.subject,
+                style = MaterialTheme.typography.titleLarge,
                 modifier = Modifier.padding(top = 12.dp, bottom = 8.dp),
+
             )
             Text(
                 text = email.body,
                 maxLines = 2,
+                style = MaterialTheme.typography.bodyLarge,
                 overflow = TextOverflow.Ellipsis
             )
         }
