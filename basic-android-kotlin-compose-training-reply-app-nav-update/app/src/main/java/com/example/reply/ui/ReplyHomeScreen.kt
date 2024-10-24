@@ -56,17 +56,20 @@ import com.example.reply.R
 import com.example.reply.data.Email
 import com.example.reply.data.MailboxType
 import com.example.reply.data.local.LocalAccountsDataProvider
+import com.example.reply.ui.utils.ReplyContentType
 import com.example.reply.ui.utils.ReplyNavigationType
 
 @Composable
 fun ReplyHomeScreen(
     navigationType: ReplyNavigationType,
     replyUiState: ReplyUiState,
+    contentType: ReplyContentType,
     onTabPressed: (MailboxType) -> Unit,
     onEmailCardPressed: (Email) -> Unit,
     onDetailScreenBackPressed: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     val navigationItemContentList = listOf(
         NavigationItemContent(
             mailboxType = MailboxType.Inbox,
@@ -89,7 +92,7 @@ fun ReplyHomeScreen(
             text = stringResource(id = R.string.tab_spam)
         )
     )
-    if (navigationType == ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER && replyUiState.isShowingHomepage) {
+    if (navigationType == ReplyNavigationType.PERMANENT_NAVIGATION_DRAWER ) {
         val navigationDrawerContentDescription = stringResource(R.string.navigation_drawer)
         PermanentNavigationDrawer(
             drawerContent = {
@@ -112,6 +115,7 @@ fun ReplyHomeScreen(
             ReplyAppContent(
                 navigationType = navigationType,
                 replyUiState = replyUiState,
+                contentType = contentType,
                 onTabPressed = onTabPressed,
                 onEmailCardPressed = onEmailCardPressed,
                 navigationItemContentList = navigationItemContentList,
@@ -123,6 +127,7 @@ fun ReplyHomeScreen(
             ReplyAppContent(
                 navigationType = navigationType,
                 replyUiState = replyUiState,
+                contentType = contentType,
                 onTabPressed = onTabPressed,
                 onEmailCardPressed = onEmailCardPressed,
                 navigationItemContentList = navigationItemContentList,
@@ -131,6 +136,7 @@ fun ReplyHomeScreen(
         } else {
             ReplyDetailsScreen(
                 replyUiState = replyUiState,
+                isFullScreen = true,
                 onBackPressed = onDetailScreenBackPressed,
                 modifier = modifier
             )
@@ -142,6 +148,7 @@ fun ReplyHomeScreen(
 private fun ReplyAppContent(
     navigationType: ReplyNavigationType,
     replyUiState: ReplyUiState,
+    contentType: ReplyContentType,
     onTabPressed: ((MailboxType) -> Unit),
     onEmailCardPressed: (Email) -> Unit,
     navigationItemContentList: List<NavigationItemContent>,
@@ -165,6 +172,30 @@ private fun ReplyAppContent(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.inverseOnSurface)
             ) {
+                if (contentType == ReplyContentType.LIST_DETAIL) {
+                    ReplyListAndDetailContent(
+                        replyUiState = replyUiState,
+                        onEmailCardPressed = onEmailCardPressed,
+                        modifier = Modifier.weight(1f)
+                    )
+                } else {
+                    ReplyListOnlyContent(
+                        replyUiState = replyUiState,
+                        onEmailCardPressed = onEmailCardPressed,
+                        modifier = Modifier.weight(1f)
+                            .padding(
+                                horizontal = dimensionResource(R.dimen.email_list_only_horizontal_padding)
+                            )
+                    )
+                }
+                AnimatedVisibility(visible = navigationType == ReplyNavigationType.BOTTOM_NAVIGATION) {
+                    ReplyBottomNavigationBar(
+                        currentTab = replyUiState.currentMailbox,
+                        onTabPressed = onTabPressed,
+                        navigationItemContentList = navigationItemContentList
+                    )
+                }
+            }
                 ReplyListOnlyContent(
                     replyUiState = replyUiState,
                     onEmailCardPressed = onEmailCardPressed,
@@ -187,7 +218,7 @@ private fun ReplyAppContent(
             }
         }
     }
-}
+
 
 @Composable
 private fun ReplyNavigationRail(
