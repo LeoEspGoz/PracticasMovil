@@ -41,7 +41,9 @@ fun InventoryNavHost(
     modifier: Modifier = Modifier,
 ) {
     NavHost(
-        navController = navController, startDestination = HomeDestination.route, modifier = modifier
+        navController = navController,
+        startDestination = HomeDestination.route,
+        modifier = modifier
     ) {
         composable(route = HomeDestination.route) {
             HomeScreen(navigateToItemEntry = { navController.navigate(ItemEntryDestination.route) },

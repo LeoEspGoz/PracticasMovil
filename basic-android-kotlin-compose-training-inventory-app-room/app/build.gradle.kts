@@ -80,6 +80,8 @@ dependencies {
 
     //Room
     implementation("androidx.room:room-runtime:${rootProject.extra["room_version"]}")
+    implementation("androidx.test.espresso:espresso-core:3.6.1")
+    implementation("androidx.test.ext:junit:1.2.1")
     ksp("androidx.room:room-compiler:${rootProject.extra["room_version"]}")
     implementation("androidx.room:room-ktx:${rootProject.extra["room_version"]}")
 
