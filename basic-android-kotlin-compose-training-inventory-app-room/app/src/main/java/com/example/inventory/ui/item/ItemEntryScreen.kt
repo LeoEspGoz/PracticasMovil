@@ -141,6 +141,7 @@ fun ItemInputForm(
                 unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 disabledContainerColor = MaterialTheme.colorScheme.secondaryContainer,
             ),
+            shape = MaterialTheme.shapes.medium,
             modifier = Modifier.fillMaxWidth(),
             enabled = enabled,
             singleLine = true
